@@ -1,17 +1,10 @@
-const { BrowserWindow, app, ipcMain, ipcRenderer } = require("electron");
+const { BrowserWindow, app, ipcMain, ipcRenderer, webContents } = require("electron");
 
-let MainPage;
+let win;
 const  dataBase  = require('./Config/db') 
 dbConfig = new dataBase()
 
-result  = dbConfig.db.get('SELECT * FROM todo ')
 
- console.log(result)
-//  
-// database connection start
-
-
-// database connection end
 
 
 
@@ -22,10 +15,9 @@ app.whenReady().then(() => {
   })
 
   function createWindow () {
-    const win = new BrowserWindow({
+     win = new BrowserWindow({
       
         webPreferences: {
-       
           nodeIntegration: true,
           contextIsolation: false,
       }
@@ -36,6 +28,14 @@ app.whenReady().then(() => {
   }
 
   ipcMain.on('newToDo',(Event,value)=>{
-   console.log(value)
    dbConfig.db.exec(`INSERT INTO "todo" ("todo") VALUES ("${value}")`)
+   
+   let todoupdated = 'todo';
+  win.webContents.send('heyDBupdaated',todoupdated)
+
+   
   })
+    
+  
+ 
+  
