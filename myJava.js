@@ -20,7 +20,7 @@ ipcRenderer.on("heyDBupdaated",(event,todoupdated)=>{
 
 function fetchDB(){
 const Db = new dbConfig()
- Db.db.all('SELECT * FROM todo',(err,row)=>{
+ Db.db.all('SELECT * FROM todo ORDER BY id DESC',(err,row)=>{
     document.querySelector("ul").innerHTML = ""
     for (i=0; i<row.length; i++){
         

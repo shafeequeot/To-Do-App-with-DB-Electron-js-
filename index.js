@@ -57,7 +57,10 @@ app.whenReady().then(() => {
        if(result.response == '0'){
          
         dbConfig.db.exec(`DELETE FROM "todo" WHERE ID = ${value2}`,resp=>{
-          alert(resp)
+          if (resp){
+
+            console.log(resp)
+          }
         })
                 
         win.webContents.send('heyDBupdaated',todoupdated)
