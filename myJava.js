@@ -1,4 +1,5 @@
-const { ipcRenderer } = require("electron");
+const { ipcRenderer, BrowserWindow } = require("electron");
+const { promises } = require("fs");
 const dbConfig = require("./Config/db")
 
 
@@ -18,9 +19,9 @@ ipcRenderer.on("heyDBupdaated",(event,todoupdated)=>{
     fetchDB()
 })
 
-function fetchDB(){
-const Db = new dbConfig()
- Db.db.all('SELECT * FROM todo ORDER BY id DESC',(err,row)=>{
+ function fetchDB(){
+ const Db = new dbConfig()
+  Db.db.all('SELECT * FROM todo ORDER BY id DESC',(err,row)=>{
     document.querySelector("ul").innerHTML = ""
     for (i=0; i<row.length; i++){
         
