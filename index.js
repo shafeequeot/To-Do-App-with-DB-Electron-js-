@@ -9,10 +9,11 @@ dbConfig = new dataBase()
 let todoupdated = 'todo';
 
 app.whenReady().then(() => {
+
   
     createWindow()
-
-   
+  
+    
   })
 
   function createWindow () {
@@ -37,7 +38,8 @@ app.whenReady().then(() => {
    
  
   win.webContents.send('heyDBupdaated',todoupdated)
-
+  const DBPath = app.getPath('appData')
+  win.webContents.send("DBpath", DBPath)
    
   })
     
@@ -57,7 +59,10 @@ app.whenReady().then(() => {
        if(result.response == '0'){
          
         dbConfig.db.exec(`DELETE FROM "todo" WHERE ID = ${value2}`,resp=>{
-          alert(resp)
+          if (resp){
+
+            console.log(resp)
+          }
         })
                 
         win.webContents.send('heyDBupdaated',todoupdated)
@@ -70,4 +75,3 @@ app.whenReady().then(() => {
   })
   
  
-  
