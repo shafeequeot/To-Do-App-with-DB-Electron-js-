@@ -1,6 +1,6 @@
-const { ipcRenderer, BrowserWindow } = require("electron");
+const { ipcRenderer, BrowserWindow, app, remote } = require("electron");
 const { promises } = require("fs");
-const dbConfig = require("./Config/db")
+const dbConfig = require("./Config/dbPath")
 
 
 
@@ -14,26 +14,40 @@ document.querySelector(".btnSubmit").addEventListener("click",(event)=>{
    ipcRenderer.send("newToDo",todoText)
 });
 
-fetchDB()
+dbConfig.dbConnection().then((result)=>{
+console.log("seccess" + result)
+ })
 ipcRenderer.on("heyDBupdaated",(event,todoupdated)=>{
     fetchDB()
 })
 
  function fetchDB(){
- const Db = new dbConfig()
-  Db.db.all('SELECT * FROM todo ORDER BY id DESC',(err,row)=>{
-    document.querySelector("ul").innerHTML = ""
-    for (i=0; i<row.length; i++){
-        
-            let ul = document.querySelector('ul')
-            let li = document.createElement('li');
-         
-            li.innerHTML = row[i].todo + "<span class='close' onClick='deleteMe(" + row[i].id + ")'>x</span>"
-            ul.appendChild(li);
+     
+try{
+console.log("a1")
+     Db = new dbConfig()
+    console.log("a2")
 
-        // document.querySelector('.Lists').innerHTML = i+" " + row[i].todo + "<br/>" 
-    }
-    })
+    
+//      Db.db.all('SELECT * FROM todo ORDER BY id DESC',(err,row)=>{
+//         console.log("a3")
+//        document.querySelector("ul").innerHTML = ""
+//        console.log("a4")
+//        for (i=0; i<row.length; i++){
+//         console.log("a5")
+//                let ul = document.querySelector('ul')
+//                let li = document.createElement('li');
+            
+//                li.innerHTML = row[i].todo + "<span class='close' onClick='deleteMe(" + row[i].id + ")'>x</span>"
+//                ul.appendChild(li);
+   
+          
+       
+//        }
+// })
+}catch(errors){
+alert(errors)
+}
 }
 
 

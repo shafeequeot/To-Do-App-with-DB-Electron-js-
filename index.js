@@ -2,7 +2,7 @@ const { BrowserWindow, app, ipcMain, ipcRenderer, webContents, dialog } = requir
 
 let win;
 const  dataBase  = require('./Config/db') 
-dbConfig = new dataBase()
+// dbConfig = new dataBase()
 
 
 
@@ -11,8 +11,8 @@ let todoupdated = 'todo';
 app.whenReady().then(() => {
   
     createWindow()
-
-   
+  
+    
   })
 
   function createWindow () {
@@ -28,6 +28,8 @@ app.whenReady().then(() => {
     })
     //win.maximize()
     const a = win.loadFile('index.html')
+
+    
     
     
   }
@@ -71,6 +73,6 @@ app.whenReady().then(() => {
        
      })
   })
-  
  
-  
+ 
+ 

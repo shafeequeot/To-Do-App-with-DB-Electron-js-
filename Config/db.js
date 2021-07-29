@@ -2,38 +2,69 @@
 const sqlite3 = require('sqlite3')
 const path  = require('path')
 const fs = require('fs-extra')
-const { BrowserWindow, ipcRenderer } = require('electron')
+const { dialog, app, Main, remote } = require('electron')
+const { stringify } = require('querystring')
+
 
  class dataBase {
     constructor(){
     
-        const file = path.join(__dirname,'../ddb/SqlNew3.db')
-        if(fs.existsSync(file)){
+        // return new promises((resolve,reject)=>{
+
+        // })   
+        const checkPath = path.join( app ? app.getPath('userData') : remote.app.getPath('userData'),'\Local Storage/config.json')
+       
+        const dbPath = fs.readJsonSync(checkPath, { throws: false })
+        
+        if(dbPath != null){
             
-                
-                            console.log("step 3.1")
-                            this.db = new sqlite3.Database(path.join(__dirname,'../db/SqlNew3.db'))
+                console.log("1: " + dbPath.dbPath)
+                        console.log("step 3.1")
+                        try{
+                            
+                            this.db = new sqlite3.Database(dbPath.dbPath)
                             this.db.exec('CREATE TABLE IF NOT EXISTS "todo" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"todo" text);')
                             console.log("step 4")
+                        }catch(error){
+console.log(error)
+                        }
                     
-        }else{
-            console.log("mwoneeeee you dont have the path")
-        }
-        
-        // .then(exists =>{
-        //       if(exists===true){
-        //         console.log("step 3")
-        //         this.db = new sqlite3.Database(path.join(__dirname,'../db/SqlNew3.db'))
-        //         this.db.exec('CREATE TABLE IF NOT EXISTS "todo" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"todo" text);')
-        //         console.log("step 4")
-        //       }
-        //     })
-        // .catch(err=>{
-        //     console.error("error: " + err)
-           
-        // })
 
-           
+        }else{
+            
+            app.whenReady().then(() => {
+ 
+                dialog.showOpenDialog({ properties: ['openFile'] }).then(result=>{
+                    if(!result.canceled){
+                       
+                        fs.writeJsonSync(checkPath, {dbPath:  result.filePaths[0] })
+                        // pathExist()
+                    }else{
+ 
+                    }
+        })
+    })
+        }
+
+
+
+        
+        
+
+        
+        // if(fs.existsSync(file)){
+        //     pathExist()
+        //    
+                    
+        // }
+            
+            
+                 
+                   
+              
+
+        
+      
  
     
     }
