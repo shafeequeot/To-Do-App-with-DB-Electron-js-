@@ -12,8 +12,8 @@ app.whenReady().then(() => {
 
   
     createWindow()
-  
-    
+   
+   
   })
 
   function createWindow () {
@@ -28,6 +28,7 @@ app.whenReady().then(() => {
       
     })
     //win.maximize()
+    
     const a = win.loadFile('index.html')
     
     
@@ -74,4 +75,5 @@ app.whenReady().then(() => {
      })
   })
   
- 
+
+

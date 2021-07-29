@@ -2,40 +2,60 @@
 const sqlite3 = require('sqlite3')
 const path  = require('path')
 const fs = require('fs-extra')
+const { app } = require('electron')
 
 
-// import  sqlite3  from 'sqlite3'
-class dataBase {
-     constructor(){
+
+
+
+
+
+ class dataBase {
+    constructor(){
     
-        console.log("step 1")
-        const file = path.join(__dirname,'../db/SqlNew3.db')
-        fs.pathExists(file, (err, exists) => {
-            console.log("step 2")
-            console.log(err) // => null
-            if(exists===true){
-                console.log("step 3")
-              
+        const setDbpath = path.join(app.getPath('userData'),'/todoApp Storage/Config.json')
 
-            }else{
-                alert("file not found")
-            }
-          })
+        fs.ensureFile(setDbpath)
+        .then((result) => {
+          
+          console.log(fs.readJsonSync(setDbpath))
+
+       
+          
+          
 
 
-          try{
+          fs.writeJSONSync(file, {path: 'Null ennu kodukkna p'})
+      
+fs.readJsonSync(file)
 
-            this.db = new sqlite3.Database(path.join(__dirname,'../db/SqlNew3.db'))
-            console.log("step 4")
-            this.db.exec('CREATE TABLE IF NOT EXISTS "todo" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"todo" text);')
-            console.log("step 5")
-                
-        }catch(error){
+        })
+        .catch(err => {
+          console.error(err)
+        })
 
-            console.log("Errror" + error)
-        }
- 
 
-} 
+
+        // if(fs.existsSync(file)){
+            
+        //     this.dbPath = "true"
+                            
+        //                     this.db = new sqlite3.Database(path.join(__dirname,'../db/SqlNew3.db'))
+        //                     this.db.exec('CREATE TABLE IF NOT EXISTS "todo" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"todo" text);')
+                            
+                    
+        // }else{
+          
+          
+        // }
+          
+           
+        
+    
+    }
+    
 }
+
+
+
 module.exports = dataBase;
