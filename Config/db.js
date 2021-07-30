@@ -8,60 +8,21 @@ const { stringify } = require('querystring')
 
  class dataBase {
     constructor(){
-    
-        // return new promises((resolve,reject)=>{
-
-        // })   
-        const checkPath = path.join( app ? app.getPath('userData') : remote.app.getPath('userData'),'\Local Storage/config.json')
-       
-        const dbPath = fs.readJsonSync(checkPath, { throws: false })
         
-        if(dbPath != null){
-            
-                console.log("1: " + dbPath.dbPath)
-                        console.log("step 3.1")
-                        try{
-                            
-                            this.db = new sqlite3.Database(dbPath.dbPath)
-                            this.db.exec('CREATE TABLE IF NOT EXISTS "todo" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"todo" text);')
-                            console.log("step 4")
-                        }catch(error){
-console.log(error)
-                        }
-                    
-
-        }else{
-            
-            app.whenReady().then(() => {
- 
-                dialog.showOpenDialog({ properties: ['openFile'] }).then(result=>{
-                    if(!result.canceled){
-                       
-                        fs.writeJsonSync(checkPath, {dbPath:  result.filePaths[0] })
-                        // pathExist()
-                    }else{
- 
-                    }
+         ipcRenderer.invoke('read-user-data').then(rvdbPath => {
+            try {
+                db = new sqlite3.Database(rvdbPath)
+                db.exec('CREATE TABLE IF NOT EXISTS "todocddd" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"todo" text);')
+                getdb(db)
+            } catch (error) {
+               console.log(error)
+            }
         })
-    })
-        }
-
-
-
-        
-        
-
-        
-        // if(fs.existsSync(file)){
-        //     pathExist()
-        //    
-                    
-        // }
             
-            
-                 
-                   
-              
+       
+    function getdb(db){
+console.log(db)
+    }
 
         
       

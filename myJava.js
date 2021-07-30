@@ -1,7 +1,7 @@
 const { ipcRenderer, BrowserWindow, app, remote } = require("electron");
 const { promises } = require("fs");
-const dbConfig = require("./Config/dbPath")
-
+const dbConfig = require("./Config/db")
+const sqlite3 = require('sqlite3')
 
 
 document.querySelector(".btnSubmit").addEventListener("click",(event)=>{
@@ -14,22 +14,21 @@ document.querySelector(".btnSubmit").addEventListener("click",(event)=>{
    ipcRenderer.send("newToDo",todoText)
 });
 
-dbConfig.dbConnection().then((result)=>{
-console.log("seccess" + result)
- })
+
+
+fetchDB()
 ipcRenderer.on("heyDBupdaated",(event,todoupdated)=>{
     fetchDB()
 })
 
- function fetchDB(){
-     
-try{
-console.log("a1")
-     Db = new dbConfig()
-    console.log("a2")
-
+ async function fetchDB(){
     
-//      Db.db.all('SELECT * FROM todo ORDER BY id DESC',(err,row)=>{
+
+console.log("a1")
+      Db = await new dbConfig()
+console.log(Db.db)
+    
+//      Db.db.exec('SELECT * FROM todo ORDER BY id DESC',(err,row)=>{
 //         console.log("a3")
 //        document.querySelector("ul").innerHTML = ""
 //        console.log("a4")
@@ -45,9 +44,7 @@ console.log("a1")
        
 //        }
 // })
-}catch(errors){
-alert(errors)
-}
+
 }
 
 
