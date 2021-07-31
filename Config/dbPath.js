@@ -7,27 +7,48 @@ var Promise = require('promise');
 
 
 
-module.exports = {
-
-    dbConnection: function () {
 
 
+module.exports.dbConnect = function (done) {
 
-            ipcRenderer.invoke('read-user-data').then(rvdbPath => {
-                   dbPath = rvdbPath        
-                   
-            })
+    ipcRenderer.invoke('read-user-data').then(rvdbPath => {
 
-            try {
-                db = new sqlite3.Database(dbPath)
-                db.exec('CREATE TABLE IF NOT EXISTS "todocddd" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"todo" text);')
-                
-            } catch (error) {
-               console.log(error)
-            }
+
+        db = new sqlite3.Database(rvdbPath)
+        db.exec('CREATE TABLE IF NOT EXISTS "todocddd" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"todo" text);')
         
+        done(db)
 
-            return "dkfj"
-      
-    }
+
+    })
+
 }
+
+
+
+// module.exports.dbConnection = function () {
+
+
+
+//             ipcRenderer.invoke('read-user-data').then(rvdbPath => {
+//                 try {
+
+//                     db = new sqlite3.Database(rvdbPath)
+//                 db.exec('CREATE TABLE IF NOT EXISTS "todocddd" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"todo" text);')
+//                    thenga(db)
+//                 } catch (error) {
+//                    console.log(error)
+//                 }        
+
+//             })
+
+
+
+
+
+//     }
+
+//     module.exports.thenga = function (db){
+//         alert("punnakan vilichu" + db)
+//         return db
+//     }

@@ -8,21 +8,21 @@ const { stringify } = require('querystring')
 
  class dataBase {
     constructor(){
-        
-         ipcRenderer.invoke('read-user-data').then(rvdbPath => {
+        this.olakka = "KK"
+       return  ipcRenderer.invoke('read-user-data').then(rvdbPath => {
+            
             try {
                 db = new sqlite3.Database(rvdbPath)
                 db.exec('CREATE TABLE IF NOT EXISTS "todocddd" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"todo" text);')
-                getdb(db)
+               
             } catch (error) {
                console.log(error)
             }
+           
         })
             
        
-    function getdb(db){
-console.log(db)
-    }
+    
 
         
       

@@ -2,8 +2,8 @@ const { BrowserWindow, app, ipcMain, ipcRenderer, webContents, dialog } = requir
 const path = require('path')
 const fs = require('fs-extra')
 let win;
-const dataBase = require('./Config/db');
-const dbPath = require("./Config/dbPath");
+const dataBase = require('./Config/dbPath');
+
 // dbConfig = new dataBase()
 
 
@@ -61,14 +61,28 @@ ipcMain.on('deleteIt', (event, value2) => {
   }).then(result => {
     if (result.response == '0') {
 
-      dbConfig.db.exec(`DELETE FROM "todo" WHERE ID = ${value2}`, resp => {
-        if (resp) {
+console.log("i1")
 
-          console.log(resp)
-        }
-      })
+try{
+  dataBase.dbConnect((db)=>{
+    console.log("i2" + db)
+    // db.exec(`DELETE FROM "todo" WHERE ID = ${value2}`, resp => {
+    //   console.log("i3")
+    //   if (resp) {
+    //     console.log("i4")
+    //     console.log(resp)
+    //   }
+    // })
+    console.log("i5")
+    // win.webContents.send('heyDBupdaated', todoupdated)
+  })
+}catch(erro){
+  console.log(erro)
+}
 
-      win.webContents.send('heyDBupdaated', todoupdated)
+
+
+     
     } else {
       console.log("you pressed dont delete")
 
