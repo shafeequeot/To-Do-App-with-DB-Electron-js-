@@ -38,10 +38,16 @@ function createWindow() {
 }
 
 ipcMain.on('newToDo', (Event, value) => {
-  dbConfig.db.exec(`INSERT INTO "todo" ("todo") VALUES ("${value}")`)
 
+  dataBase.db((db)=>{
+    db.exec(`INSERT INTO "todo" ("todo") VALUES ("${value}")`,res=>{
 
-  win.webContents.send('heyDBupdaated', todoupdated)
+      win.webContents.send('heyDBupdaated', todoupdated)
+    })
+
+ 
+  })
+  
 
 
 })
@@ -61,20 +67,19 @@ ipcMain.on('deleteIt', (event, value2) => {
   }).then(result => {
     if (result.response == '0') {
 
-console.log("i1")
+
 
 try{
-  dataBase.dbConnect((db)=>{
-    console.log("i2" + db)
-    // db.exec(`DELETE FROM "todo" WHERE ID = ${value2}`, resp => {
-    //   console.log("i3")
-    //   if (resp) {
-    //     console.log("i4")
-    //     console.log(resp)
-    //   }
-    // })
-    console.log("i5")
-    // win.webContents.send('heyDBupdaated', todoupdated)
+  dataBase.db((db)=>{
+    
+     db.exec(`DELETE FROM "todo" WHERE ID = ${value2}`, resp => {
+      win.webContents.send('heyDBupdaated', todoupdated)
+      if (resp) {
+       
+        console.log(resp)
+      }
+    })
+    
   })
 }catch(erro){
   console.log(erro)

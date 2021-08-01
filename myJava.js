@@ -25,12 +25,12 @@ async function fetchDB() {
     dbConfig.dbConnect((db) => {
         console.log(db)
         db.all('SELECT * FROM todo ORDER BY id DESC', (err, row) => {
-            console.log("a3")
+           
             document.querySelector("ul").innerHTML = ""
-            console.log("a4")
+           dbRow = row ? row.length : 0
             console.log(row)
-            for (i = 0; i < row.length; i++) {
-                console.log("a5")
+            for (i = 0; i < dbRow; i++) {
+                
                 let ul = document.querySelector('ul')
                 let li = document.createElement('li');
     
