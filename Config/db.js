@@ -8,69 +8,34 @@ const { dialog, app, Main, remote } = require('electron')
 
  class dataBase {
     constructor(){
-    
-        // return new promises((resolve,reject)=>{
-
-        // })   
        
-       
-
-        const checkPath = app.getPath('userData') 
-        
-        
-       alert(checkPath)
-        const dbPath = fs.readJsonSync(checkPath + '/config.json', { throws: false })
-        
-        if(dbPath != null){
+         ipcRenderer.invoke('read-user-data').then(rvdbPath => {
+             console.log("inv" + rvdbPath)
+            return getDb(rvdbPath)
             
-                console.log("1: " + dbPath.dbPath)
-                        console.log("step 3.1")
-                        try{
-                            
-                            this.db = new sqlite3.Database(dbPath.dbPath)
-                            this.db.exec('CREATE TABLE IF NOT EXISTS "todo" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"todo" text);')
-                            console.log("step 4")
-                        }catch(error){
-console.log(error)
-                        }
-                    
-
-        }else{
-            
-            app.whenReady().then(() => {
- 
-                dialog.showOpenDialog({ properties: ['openFile'] }).then(result=>{
-                    if(!result.canceled){
-                       
-                        fs.writeJsonSync(checkPath, {dbPath:  result.filePaths[0] })
-                        // pathExist()
-                    }else{
- 
-                    }
+           
         })
-    })
+            
+      
+    function getDb(dbPath){
+        console.log(dbPath)
+        try {
+            
+            const db = new sqlite3.Database(dbPath)
+            // console.log(db)
+            db.exec('CREATE TABLE IF NOT EXISTS "todocddd" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"todo" text);')
+            
+            return getDb(db)
+        } catch (error) {
+           console.log(error)
+           console.log("114")
         }
 
-
-
-        
-        
+    }
 
         
-        // if(fs.existsSync(file)){
-        //     pathExist()
-        //    
-                    
-        // }
-            
-            
-                 
-                   
-              
-
-        
-      
- 
+    
+    // return await getDb()
     
     }
     
