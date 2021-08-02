@@ -2,8 +2,8 @@ const { BrowserWindow, app, ipcMain, ipcRenderer, webContents, dialog } = requir
 const path = require('path')
 const fs = require('fs-extra')
 let win;
-const dataBase = require('./Config/db');
-const dbPath = require("./Config/dbPath");
+const dataBase = require('./Config/dbPath');
+
 // dbConfig = new dataBase()
 
 
@@ -38,10 +38,16 @@ function createWindow() {
 }
 
 ipcMain.on('newToDo', (Event, value) => {
-  dbConfig.db.exec(`INSERT INTO "todo" ("todo") VALUES ("${value}")`)
 
+  dataBase.db((db)=>{
+    db.exec(`INSERT INTO "todo" ("todo") VALUES ("${value}")`,res=>{
+      res ? console.log(res) : 
+      win.webContents.send('heyDBupdaated', todoupdated)
+    })
 
-  win.webContents.send('heyDBupdaated', todoupdated)
+ 
+  })
+  
 
 
 })
@@ -61,14 +67,27 @@ ipcMain.on('deleteIt', (event, value2) => {
   }).then(result => {
     if (result.response == '0') {
 
-      dbConfig.db.exec(`DELETE FROM "todo" WHERE ID = ${value2}`, resp => {
-        if (resp) {
 
-          console.log(resp)
-        }
-      })
 
+try{
+  dataBase.db((db)=>{
+    
+     db.exec(`DELETE FROM "todo" WHERE ID = ${value2}`, resp => {
       win.webContents.send('heyDBupdaated', todoupdated)
+      if (resp) {
+       
+        console.log(resp)
+      }
+    })
+    
+  })
+}catch(erro){
+  console.log(erro)
+}
+
+
+
+     
     } else {
       console.log("you pressed dont delete")
 

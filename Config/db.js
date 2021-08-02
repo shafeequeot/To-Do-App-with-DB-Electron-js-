@@ -8,30 +8,21 @@ const { dialog, app, Main, remote } = require('electron')
 
  class dataBase {
     constructor(){
-       
-         ipcRenderer.invoke('read-user-data').then(rvdbPath => {
-             console.log("inv" + rvdbPath)
-            return getDb(rvdbPath)
+        this.olakka = "KK"
+       return  ipcRenderer.invoke('read-user-data').then(rvdbPath => {
             
+            try {
+                db = new sqlite3.Database(rvdbPath)
+                db.exec('CREATE TABLE IF NOT EXISTS "todocddd" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"todo" text);')
+               
+            } catch (error) {
+               console.log(error)
+            }
            
         })
             
-      
-    function getDb(dbPath){
-        console.log(dbPath)
-        try {
-            
-            const db = new sqlite3.Database(dbPath)
-            // console.log(db)
-            db.exec('CREATE TABLE IF NOT EXISTS "todocddd" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"todo" text);')
-            
-            return getDb(db)
-        } catch (error) {
-           console.log(error)
-           console.log("114")
-        }
-
-    }
+       
+    
 
         
     

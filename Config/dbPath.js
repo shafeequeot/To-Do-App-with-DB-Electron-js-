@@ -3,31 +3,29 @@ const electron = require('electron')
 const sqlite3 = require('sqlite3')
 var Promise = require('promise');
 
+const path = require('path');
+const { app } = require('electron');
 
 
 
 
-module.exports = {
+module.exports.dbConnect = function (done) {
 
-    dbConnection: function () {
+    ipcRenderer.invoke('read-user-data').then(rvdbPath => {
 
-
-
-            ipcRenderer.invoke('read-user-data').then(rvdbPath => {
-                   dbPath = rvdbPath        
-                   
-            })
-
-            try {
-                db = new sqlite3.Database(dbPath)
-                db.exec('CREATE TABLE IF NOT EXISTS "todocddd" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"todo" text);')
-                
-            } catch (error) {
-               console.log(error)
-            }
+        db = new sqlite3.Database(rvdbPath)
+        db.exec('CREATE TABLE IF NOT EXISTS "todo" ("id" INTEGER PRIMARY KEY AUTOINCREMENT,"todo" text);')
         
+        done(db)
 
-            return "dkfj"
-      
-    }
+
+    })
+
+}
+
+module.exports.db = function(done){
+    const dbPath = fs.readJsonSync(path.join(app.getPath('userData'), '\Local Storage/config.json'))
+    db = new sqlite3.Database(dbPath.dbPath)
+    
+    done(db)
 }
